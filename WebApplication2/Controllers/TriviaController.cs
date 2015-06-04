@@ -12,6 +12,7 @@ using GeekQuiz.Models;
 
 namespace WebApplication2.Controllers
 {
+    [Authorize]
     public class TriviaController : ApiController
     {
         private TriviaContext db = new TriviaContext();
@@ -42,6 +43,26 @@ namespace WebApplication2.Controllers
                 return NotFound();
             }
             return Ok(nextQuestion);
+        }
+
+        private async Task<bool> StoreAsync(TriviaAnswer answer)
+        {
+            db.TriviaAnswers.Add(answer);
+            await db.SaveChangesAsync();
+            var selectedOption = await db.TriviaOptions.FirstOrDefaultAsync(x => x.Id == answer.Id && x.QuestionId == answer.QuestionId);
+            return selectedOption.IsCorrect;
+        }
+
+        [ResponseType(typeof (TriviaAnswer))]
+        public async Task<IHttpActionResult> Post(TriviaAnswer answer)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            answer.UserId = User.Identity.Name;
+            var isCorrect = await StoreAsync(answer);
+            return Ok(isCorrect);
         }
 
         protected override void Dispose(bool disposing)
