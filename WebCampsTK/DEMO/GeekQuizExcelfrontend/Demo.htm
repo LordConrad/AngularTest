@@ -1,0 +1,238 @@
+<p><a name="title" /></p>
+
+<h1>Building an Excel front end (using apps for Office)</h1>
+
+<hr>
+
+<p><a name="Overview" /></p>
+
+<h2>Overview</h2>
+
+<p>This demo demonstrates how an Excel app can pull statistics from GeekQuiz through Web API.</p>
+
+<p><a id="goals" /></p>
+
+<h3>Goals</h3>
+
+<p>In this demo, you will see how to:</p>
+
+<ol>
+<li>Expose statistics through Web API</li>
+<li>Invoke a Web API from an Excel app</li>
+<li>Display data in a worksheet containing graphs</li>
+</ol>
+
+<p><a name="technologies" /></p>
+
+<h3>Key Technologies</h3>
+
+<ul>
+<li><a href="http://msdn.microsoft.com/library/office/apps/jj220082(v=office.15)">Apps for Office (Excel)</a></li>
+<li><a href="http://www.asp.net/web-api">Excel</a></li>
+<li><a href="http://office.microsoft.com/en-us/excel/">ASP.NET Web API</a></li>
+</ul>
+
+<p><a name="Setup" /></p>
+
+<h3>Setup and Configuration</h3>
+
+<p>Follow these steps to setup your environment for the demo.</p>
+
+<ol>
+<li><p>Follow the steps detailed in <a href="http://docs.nuget.org/docs/creating-packages/hosting-your-own-nuget-feeds">this link</a> to setup local sources for the following directories:</p>
+
+<ol>
+<li><strong>C:\Program Files (x86)\Microsoft Web Tools\Packages</strong></li>
+<li><strong>C:\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Stack 5\Packages</strong></li>
+</ol>
+
+<p><img src="images/nuget-sources.png?raw=true" alt="NuGet Sources">
+</p></li>
+<li><p>Open Visual Studio 2013.</p></li>
+<li><p>Open the <strong>GeekQuiz.sln</strong> solution located under <strong>source\end</strong>.</p></li>
+<li><p>Press <strong>F5</strong> to start the application.</p></li>
+<li><p>If you don't have one, create a user account for the application. To do that, click <strong>Register</strong> and provide the information required.</p>
+<blockquote>
+<p><strong>Note:</strong> Remember the information you provided as you will use it during the demo.</p>
+</blockquote></li>
+<li><p>Answer a few questions and then close the browser window.</p></li>
+<li><p>Make sure that the <strong>GeekQuiz Website</strong> project has <strong>Current Page</strong> configured as the <strong>Start Action</strong>. To do this, open the project properties, open the Web tab and select the <strong>Current Page</strong> option.</p>
+
+<p><img src="images/configuring-the-start-action-of-the-website.png?raw=true" alt="Configuring the start action for the web site" title="Configuring the start action for the web site">
+</p>
+
+<p><em>Configuring the start action for the web site</em></p></li>
+<li><p>Save the settings.</p></li>
+<li><p>Click the <strong>GeekQuiz.Office</strong> project, open the properties window and set the <strong>Start Action</strong> to <strong>StatisticsDev.xlsx</strong>.</p>
+
+<p><img src="images/start-action.png?raw=true" alt="Start Action">
+</p></li>
+<li><p>In Visual Studio, close all open files.</p></li>
+<li><p>Install <strong>Microsoft Excel 2013</strong> (if it is not already installed).</p></li>
+</ol>
+
+<p><a name="Demo" /></p>
+
+<h2>Demo</h2>
+
+<p>This demo is composed of the following segments:</p>
+
+<ol>
+<li><a href="#segment1">Exploring the App for Office</a>.</li>
+<li><a href="#segment2">Running the solution</a>.</li>
+</ol>
+
+<p><a name="segment1" /></p>
+
+<h3>Exploring the App for Office</h3>
+
+<ol>
+<li><p>Expand the <strong>Controllers</strong> folder, open the  <strong>StatisticsController</strong> file and show the <strong>Get</strong> method.</p>
+
+<!-- mark:1-13 -->
+
+<pre><code class="C#">// GET api/statistics
+[ResponseType(typeof(StatisticsViewModel))]
+public async Task&lt;IHttpActionResult&gt; Get()
+{
+    StatisticsViewModel statistics =
+         await this.statisticsService.GenerateStatistics();
+    if (statistics == null)
+    {
+         return NotFound();
+    }
+
+    return Ok(statistics);
+}
+</code></pre></li>
+<li><p>Open the <strong>OfficeAppController</strong> file (located in the <strong>Controllers</strong> folder) and show that the <strong>Index</strong> action returns a view.</p>
+
+<!-- mark:5-8 -->
+
+<pre><code class="C#">public class OfficeAppController : Controller
+{
+    //
+    // GET: /Office/
+    public ActionResult Index()
+    {
+        return View();
+    }
+}
+</code></pre></li>
+<li><p>Double-click the <strong>GeekQuiz.OfficeManifest</strong> file, located in the <strong>GeekQuiz.Office</strong> project and show that the <strong>Source location</strong> is defined as <strong>GeekQuiz/OfficeApp/</strong>.</p>
+
+<p><img src="images/showing-the-office-manifest.png?raw=true" alt="Showing the Office Manifest" title="Showing the Office Manifest">
+</p>
+
+<p><em>Showing the Office Manifest</em></p></li>
+<li><p>Back in the <strong>GeekQuiz</strong> project, open the <strong>Index.cshtml</strong> file located in the <strong>Views/OfficeApp</strong> folder.</p></li>
+<li><p>Highlight the <code>&lt;button&gt;</code> element that is shown in the following snippet.</p>
+
+<pre><code class="HTML">&lt;button id=&quot;update-statistics&quot; disabled &gt;Update Statistics&lt;/button&gt;
+</code></pre></li>
+<li><p>Show the <strong>Scripts</strong> section at the end of the file.</p>
+
+<pre><code class="HTML">@section Scripts {
+     &lt;script src=&quot;@Url.Content(&quot;~/Scripts/OfficeApp.js&quot;)&quot;&gt;&lt;/script&gt;
+}
+</code></pre></li>
+<li><p>Open the <strong>OfficeApp.js</strong> file located in the <strong>Scripts</strong> folder.</p></li>
+<li><p>Show the <code>Office.initialize</code> callback assignment.</p>
+
+<pre><code class="JavaScript">// The initialize function must be run each time a new page is loaded
+Office.initialize = function (reason) {
+    $(document).ready(function () {
+        $('#update-statistics').click(updateStatisticsTable);
+
+        initializeBindings();
+    });
+};
+</code></pre></li>
+<li><p>Show the <strong>initializeBindings</strong> function.</p>
+
+<pre><code class="JavaScript">function initializeBindings() {
+    Office.context.document.bindings.addFromNamedItemAsync(
+      tableName,
+      Office.BindingType.Table,
+      { id: bindingID },
+      function (asyncResult) {
+          if (asyncResult.status == Office.AsyncResultStatus.Succeeded) {
+              $('#update-statistics').prop(&quot;disabled&quot;, false);
+          }
+      });
+}
+</code></pre></li>
+<li><p>Show the <strong>updateStatisticsTable</strong> function.</p>
+
+<pre><code class="JavaScript">function updateStatisticsTable() {
+    $.getJSON(&quot;/api/statistics&quot;, function (data) {
+        var headers = [['Total', 'Correct', 'Incorrect', 'Correct p/user', 'Incorrect p/user', 'Total p/user']];
+        var rows = [[data.totalAnswers, data.correctAnswers, data.incorrectAnswers,
+                      data.correctAnswersAverage, data.incorrectAnswersAverage, data.totalAnswersAverage]];
+        var newValuesTable = new Office.TableData(rows, headers);
+
+        Office.select(&quot;bindings#&quot; + bindingID).setDataAsync(newValuesTable, { coercionType: Office.CoercionType.Table });
+    });
+}
+</code></pre></li>
+</ol>
+
+<p><a name="segment2" /></p>
+
+<h3>Running the solution</h3>
+
+<ol>
+<li><p>Start running the application by pressing <strong>CTRL + F5</strong>.</p>
+
+<p><img src="images/running-the-solution.png?raw=true" alt="Running the solution" title="Running the solution">
+</p>
+
+<p><em>Running the solution</em></p></li>
+<li><p>Once the Excel document is open, show the app for Office.</p>
+
+<p><img src="images/showing-the-app-for-office.png?raw=true" alt="Showing the app for office" title="Showing the app for office">
+</p>
+
+<p><em>Showing the app for office</em></p></li>
+<li><p>Select to the <strong>DESIGN</strong> tab and show that the <strong>Table Name</strong> is <strong>StatisticsTable</strong>.</p>
+
+<p><img src="images/showing-the-table-name.png?raw=true" alt="Showing the table name" title="Showing the table name">
+</p>
+
+<p><em>Showing the table name</em></p></li>
+<li><p>Click <strong>Update Statistics</strong>.</p>
+
+<p><img src="images/updating-the-statistics.png?raw=true" alt="Updating the statistics" title="Updating the statistics">
+</p>
+
+<p><em>Updating the statistics</em></p>
+<blockquote>
+<p><strong>Note:</strong> It takes some time for the excel file to be updated the first time the button is clicked.</p>
+</blockquote></li>
+<li><p>Show the new data in the statistics table.</p>
+
+<p><img src="images/updated-statistics.png?raw=true" alt="Showing the updated statistics" title="Showing the updated statistics">
+</p>
+
+<p><em>Showing the updated statistics</em></p></li>
+<li><p>Switch to the <strong>GeekQuiz</strong> web site, which was opened in a web browser when you pressed <strong>CTRL + F5</strong>.</p>
+<blockquote>
+<p><strong>Note:</strong> If the Log in page is displayed, provide the credentials you created during the setup steps.</p>
+
+<p><img src="images/logging-in-the-app.png?raw=true" alt="Logging in the site" title="Logging in the site">
+  </p>
+</blockquote></li>
+<li><p>Answer a few questions.</p></li>
+<li><p>Go back to <strong>Excel</strong> and click <strong>Update statistics</strong> again.</p></li>
+<li><p>Show that the data has changed again with the latest answers.</p></li>
+</ol>
+
+<hr>
+
+<p><a name="summary" /></p>
+
+<h2>Summary</h2>
+
+<p>By completing this demo you should have walked through the code required for pulling data from GeekQuiz Web API from an Excel App</p>
+
+<hr>

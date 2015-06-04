@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Demo xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/ContentFramework.Core.Models">
+	<Id>DemoWindowsAzureActiveDirectory</Id>
+  <Technologies>
+		<Technology>Windows Azure</Technology>
+	</Technologies>
+	<Author>
+    <Name>Jon Galloway</Name>
+    <Blog>http://weblogs.asp.net/jgalloway</Blog>
+    <Email>jon.galloway@microsoft.com</Email>
+  </Author>
+	<Description>This demonstration shows how to use Windows Azure Active Directory in an ASP.NET application.</Description>
+	<Document ConversionType="Html">Demo.md</Document>
+	<Title>DEMO - Windows Azure Active Directory</Title>
+	<Version>1.0.1</Version>
+	<Source>.\Source</Source>
+</Demo>

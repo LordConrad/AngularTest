@@ -1,0 +1,290 @@
+<p><a name="title" /></p>
+
+<h1>Visual Studio and Web Essentials - Web Tooling</h1>
+
+<hr>
+
+<p><a name="Overview" /></p>
+
+<h2>Overview</h2>
+
+<p>In this demo you will perform several changes to GeekQuiz in order to showcase top web developer featuers included in the new version of Visual Studio and Web Essentials.  </p>
+
+<p><a id="goals" /></p>
+
+<h3>Goals</h3>
+
+<p>In this demo, you will see:</p>
+
+<ol>
+<li>The new HTML editor features, including HTML 5 snippets and zen coding </li>
+<li>The new CSS editor features, including Color</li>
+<li>Browser Link and the extension support for it</li>
+<li>IDs and classes Intellisense in JavaScript</li>
+</ol>
+
+<p><a name="technologies" /></p>
+
+<h3>Key Technologies</h3>
+
+<ul>
+<li><a href="http://vswebessentials.com/">Web Essentials</a></li>
+<li><a href="http://www.microsoft.com/visualstudio/esn/products/2013-editions">Visual Studio 2013</a></li>
+<li><a href="http://blogs.msdn.com/b/webdev/archive/2013/09/10/what-is-new-in-browser-link-with-visual-studio-2013-rc.aspx">Browser Link</a></li>
+</ul>
+
+<p><a name="setup" /></p>
+
+<h3>Setup and Configuration</h3>
+
+<p>Follow these steps to setup your environment for the demo.</p>
+
+<ol>
+<li><p>Follow the steps detailed in <a href="http://docs.nuget.org/docs/creating-packages/hosting-your-own-nuget-feeds">this link</a> to setup local sources for the following directories:</p>
+
+<ol>
+<li><strong>C:\Program Files (x86)\Microsoft Web Tools\Packages</strong></li>
+<li><strong>C:\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Stack 5\Packages</strong></li>
+</ol>
+
+<p><img src="Images/nuget-packages.png?raw=true" alt="Nuget Sources">
+</p></li>
+<li><p>Install <strong>Web Essentials 2013</strong> (if it is not already installed).</p></li>
+<li><p>Open the <strong>GeekQuiz.sln</strong> solution located under <strong>source/begin</strong>.</p></li>
+<li><p>If you don't have a user account, launch the application and register one.</p></li>
+<li><p>Log-in in both Chrome and IE and select to be remembered. This will avoid having to enter the credentials during the demo.</p></li>
+<li><p>Dock Visual Studio to the right and set up the layout of IE and Chrome as shown in the following figure.</p>
+
+<p><img src="Images/layout.png?raw=true" alt="Layout">
+</p></li>
+<li><p>In Visual Studio, open Index.cshtml in the editor.</p></li>
+</ol>
+
+<p><a name="Demo" /></p>
+
+<h2>Demo</h2>
+
+<p>This demo is composed of the following segments:</p>
+
+<ol>
+<li><a href="#segment1">Browser Link and Web Essentials</a></li>
+<li><a href="#segment2">Intellisense improvements</a></li>
+</ol>
+
+<p><a name="segment1" /></p>
+
+<h3>Browser Link and Web Essentials</h3>
+
+<ol>
+<li><p>Expand the browser menu in the Visual Studio toolbar and select <strong>Browse With...</strong>.</p>
+
+<p><img src="Images/browse-with.png?raw=true" alt="Browse With">
+</p></li>
+<li><p>Hold down <strong>CTRL</strong> and select <strong>Google Chrome and Internet Explorer</strong>.</p>
+
+<p><img src="Images/multiple-browsers.png?raw=true" alt="Selecting multiple browsers" title="Selecting multiple browsers">
+</p>
+
+<p><em>Selecting multiple browsers</em></p></li>
+<li><p>Click <strong>Set as Default</strong> and click <strong>Cancel</strong>.</p></li>
+<li><p>Press <strong>CTRL + F5</strong> to start debugging.</p></li>
+<li><p>Replace the <code>&lt;!-- TODO: add options here--&gt;</code> comment in the <strong>index.cshtml</strong> file with the following code snippet and press <strong>TAB</strong>.</p>
+
+<!-- mark:1 -->
+
+<pre><code class="HTML">button.btn.btn-info.btn-lg.option{Answer $}*4
+</code></pre></li>
+<li><p>Click the Browser Link <strong>Refresh</strong> button.</p>
+
+<p><img src="Images/refresh-browser-link.png?raw=true" alt="Refreshing Linked Browsers" title="Refreshing Linked Browsers">
+</p>
+
+<p><em>Refreshing Linked Browsers</em></p></li>
+<li><p>Click <strong>Internet Explorer</strong> (to set focus on it) and press <strong>CTRL + ALT + I</strong>.</p>
+<blockquote>
+<p><strong>Speaking point:</strong> Let's change the color of the border around the question.</p>
+</blockquote></li>
+<li><p>Place the mouse over the light blue border and click on it, as shown in the following figure.</p>
+
+<p><img src="Images/inspect-border.png?raw=true" alt="Inspecting the Border" title="Inspecting the Border">
+</p>
+
+<p><em>Inspecting the Border</em></p>
+<blockquote>
+<p><strong>Speaking point:</strong> Note that the element and its children are highlighted in Visual Studio. Now we know which CSS class we need to change.</p>
+</blockquote></li>
+<li><p>Back in Visual Studio, press <strong>CTRL + ,</strong>,  type <em>site.css</em> and press <strong>ENTER</strong>.</p>
+
+<p><img src="Images/opening-sitecss.png?raw=true" alt="Opening the Site.css file" title="Opening the Site.css file">
+</p>
+
+<p><em>Opening the Site.css file</em></p></li>
+<li><p>Scroll to the bottom of the file.</p>
+
+<p><img src="Images/bottom.png?raw=true" alt="Scrolling to the botton of the file" title="Scrolling to the botton of the file">
+</p>
+
+<p><em>Scrolling to the botton of the file</em></p></li>
+<li><p>Click the light blue square that is part of the border property of the <code>.flip-container .front</code> class.</p>
+
+<p><img src="Images/color-picker.png?raw=true" alt="Opening the Color Picker" title="Opening the Color Picker">
+</p>
+
+<p><em>Opening the Color Picker</em></p></li>
+<li><p>Expand the color picker by clicking the button with the chevrons, circled in the following figure.</p>
+
+<p><img src="Images/expand-color-picker.png?raw=true" alt="Expanding the Color Picker" title="Expanding the Color Picker">
+</p>
+
+<p><em>Expanding the Color Picker</em></p></li>
+<li><p>Select a new color, close the color picker and press <strong>CTRL + ALT + ENTER</strong> to update the browsers.</p>
+
+<p><img src="Images/update-border.png?raw=true" alt="Updating the Border color" title="Updating the Border color">
+</p>
+
+<p><em>Updating the Border color</em></p></li>
+<li><p>Open the <strong>Index.cshtml</strong> editor.</p></li>
+<li><p>Click <strong>Google Chrome</strong> (to set focus on it) and press <strong>CTRL + ALT + D</strong>.</p></li>
+<li><p>Place the mouse over the question's title and click on it, as shown in the following figure.</p>
+
+<p><img src="Images/edit-question.png?raw=true" alt="Editing the Question" title="Editing the Question">
+</p>
+
+<p><em>Editing the Question</em></p></li>
+<li><p>Update the original text with <em>What does it look like when I write a longer question?</em>.</p>
+<blockquote>
+<p><strong>Speaking point:</strong> Explain that the VS editor is updated and changes are saved automatically.</p>
+</blockquote></li>
+<li><p>Back in Visual Studio, click the Browser Link <strong>Refresh</strong> button so IE is refreshed.
+<a name="segment1" /></p></li>
+<li><p>Expand the <strong>Error List</strong> window and double-click the SEO related warning.</p>
+
+<p><img src="Images/seo-error.png?raw=true" alt="Opening the SEO warning" title="Opening the SEO warning">
+</p>
+
+<p><em>Opening the SEO warning</em></p></li>
+<li><p>When asked if you would like to insert a <code>&lt;meta&gt;</code> tag, click <strong>Yes</strong>. The editor for <strong>_Layout.cshtml</strong> is opened an the following code is automatically added.</p>
+
+<pre><code class="HTML">&lt;meta name=&quot;description&quot; content=&quot;The description of my page&quot; /&gt;
+</code></pre></li>
+<li><p>Change the value of the <code>content</code> attribute to <em>GeekQuiz</em> and save the file.</p></li>
+</ol>
+
+<h3>Snippets and Intellisense</h3>
+
+<ol>
+<li><p>Switch back to the <strong>Index.cshtml</strong> editor.</p></li>
+<li><p>Add the following code inside the <code>&lt;section&gt;</code> element.</p>
+
+<pre><code class="HTML">&lt;form&gt;
+     &lt;input type=&quot;text&quot; id=&quot;name&quot; /&gt;
+&lt;/form&gt;
+</code></pre></li>
+<li><p>Type <code>&lt;label for=&quot;</code> inside the <code>&lt;form&gt;</code> element. As shown in the following figure, there is intellisense based on the Id of elements within the same valid scope (the <code>&lt;form&gt;</code>).</p>
+
+<p><img src="Images/id-intellisense.png?raw=true" alt="Showing the id Intellisense" title="Showing the id Intellisense">
+</p>
+
+<p><em>Showing the id Intellisense</em></p></li>
+<li><p>Delete the recently added <code>&lt;form&gt;</code> element and all its content.</p></li>
+<li><p>Type <code>&lt;aud</code> inside the <code>&lt;section&gt;</code> element as shown in the following figure.</p>
+
+<p><img src="Images/audio-element.png?raw=true" alt="Inserting a audio element" title="Inserting a audio element">
+</p>
+
+<p><em>Inserting a audio element</em></p>
+<blockquote>
+<p><strong>Note:</strong> This demo segment adds an <code>&lt;audio&gt;</code> element to the page to showcase HTML 5 snippet support. This is meant to be a joke and the changes will be deleted, since we don't actually want to add audio to the site.</p>
+</blockquote></li>
+<li><p>Press <strong>TAB</strong> twice. The following code will be added.</p>
+
+<pre><code class="HTML">&lt;audio controls=&quot;controls&quot;&gt;
+     &lt;source src=&quot;file.mp3&quot; type=&quot;audio/mp3&quot; /&gt;
+     &lt;source src=&quot;file.ogg&quot; type=&quot;audio/ogg&quot; /&gt;
+&lt;/audio&gt;
+</code></pre></li>
+<li><p>Delete the second line and update the source of the first one with the following link to the WebCampsTV Katana show:
+<a href="http://media.ch9.ms/ch9/11d8/604b8163-fad3-4f12-9607-b404201211d8/KatanaProject.mp3">http://media.ch9.ms/ch9/11d8/604b8163-fad3-4f12-9607-b404201211d8/KatanaProject.mp3</a>. The resulting code is shown below.</p>
+
+<pre><code class="HTML">&lt;audio controls=&quot;controls&quot;&gt;
+     &lt;source src=&quot;http://media.ch9.ms/ch9/11d8/604b8163-fad3-4f12-9607-b404201211d8/KatanaProject.mp3&quot; type=&quot;audio/mp3&quot; /&gt;
+&lt;/audio&gt;
+</code></pre></li>
+<li><p>Add the following code at the bottom of the file.</p>
+
+<pre><code class="HTML">@section Scripts {
+    &lt;script src=&quot;~/Scripts/init.js&quot;&gt;&lt;/script&gt;
+}
+</code></pre></li>
+<li><p>In <strong>Solution Explorer</strong>, right-click the <strong>Scripts</strong> folder, expand the <strong>Add</strong> menu and select <strong>JavaScript File</strong>.</p>
+
+<p><img src="Images/adding-javascript-file.png?raw=true" alt="Adding a Javascript File" title="Adding a Javascript File]">
+</p>
+
+<p><em>Adding a Javascript File]</em></p></li>
+<li><p>Name the file <em>init</em> and click <strong>OK</strong>.</p></li>
+<li><p>Add the following code to the new JS file.</p>
+
+<!-- mark:1-5 -->
+
+<pre><code class="JavaScript">(function () {
+     $(document).ready(function () {
+
+     });
+}());
+</code></pre></li>
+<li><p>Type <code>document.getElementsByClassName(&quot;&quot;)</code> in the first line of the ready callback, as shown in the following figure.</p>
+
+<p><img src="Images/byclassname.png?raw=true" alt="Showing Intellisense for the getElementsByClassName method" title="Showing Intellisense for the getElementsByClassName method">
+</p>
+
+<p><em>Showing Intellisense for the getElementsByClassName method</em></p></li>
+<li><p>Delete that line.</p></li>
+<li><p>Type <code>var audioElements = document.getElementsByTagName(&quot;au&quot;)</code> in the first link of the ready callback, as shown in the following figure.</p>
+
+<p><img src="Images/getelementbytagname.png?raw=true" alt="Showing Intellisense for the GetElementByTagName method" title="Showing Intellisense for the GetElementByTagName method">
+</p>
+
+<p><em>Showing Intellisense for the GetElementByTagName method</em></p></li>
+<li><p>Select <strong>&quot;audio&quot;</strong> and press <strong>Enter</strong>. The result is shown in the following figure.</p>
+
+<p><img src="Images/retrieve-audio-elements.png?raw=true" alt="Retrieving Audio Elements" title="Retrieving Audio Elements">
+</p>
+
+<p><em>Retrieving Audio Elements</em></p></li>
+<li><p>Add the following code below the line you just typed.</p>
+
+<!-- mark:1-4 -->
+
+<pre><code class="JavaScript">var len = audioElements.length;
+for (var i = 0; i &lt; len; i++) {
+     audioElements[i].play();
+}   
+</code></pre></li>
+<li><p>Click the Browser Link <strong>Refresh</strong> button. Once the pages are refreshed, audio will start playing.</p></li>
+<li><p>Close both browser windows.</p></li>
+<li><p>Delete the <code>&lt;audio&gt;</code> element and the <code>@section Scripts</code>.</p>
+<blockquote>
+<p><strong>Speaking point:</strong> We don't really want our site to have audio (it seems a bit 1990s), so let's get rid of these things we have added.</p>
+</blockquote></li>
+</ol>
+
+<hr>
+
+<p><a name="summary" /></p>
+
+<h2>Summary</h2>
+
+<p>By completing this demo you should have showcased the featuers included in the new version of Visual Studio and Web Essentials while updating GeekQuiz:</p>
+
+<ol>
+<li>Zen Coding for creating the buttons</li>
+<li>CSS Color Picke for updating the color of the container's border</li>
+<li>Browser Link to refresh changes done in Visual Studio automatically</li>
+<li>Browser Link Extensions to reflect changes done in the browser in the source code</li>
+<li>SEO warnings</li>
+<li>IDs and JavaScript Intellisense</li>
+<li>HTML 5 code snippets for adding audio</li>
+</ol>
+
+<hr>

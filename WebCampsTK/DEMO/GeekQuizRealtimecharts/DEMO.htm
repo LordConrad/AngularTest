@@ -1,0 +1,147 @@
+<p><a name="title" /></p>
+
+<h1>Real-time charts in the GeekQuiz application</h1>
+
+<hr>
+
+<p><a name="Overview" /></p>
+
+<h2>Overview</h2>
+
+<p>This demo shows how you can leverage SignalR to see realtime statistics of a website.</p>
+
+<p><a id="goals" /></p>
+
+<h3>Goals</h3>
+
+<p>In this demo, you will see how:</p>
+
+<ol>
+<li>Statistics are generated in the StatisticsService</li>
+<li>SignalR Hub pushes updates to the front end (Statistics.cshtml)</li>
+<li>To display realtime updates as charts</li>
+</ol>
+
+<p><a name="technologies" /></p>
+
+<h3>Key Technologies</h3>
+
+<ul>
+<li><a href="http://signalr.net/">SignalR</a></li>
+</ul>
+
+<p><a name="setup" /></p>
+
+<h3>Setup and Configuration</h3>
+
+<p>Follow these steps to setup your environment for the demo.</p>
+
+<ol>
+<li><p>Follow the steps detailed in <a href="http://docs.nuget.org/docs/creating-packages/hosting-your-own-nuget-feeds">this link</a> to setup local sources for the following directories:</p>
+
+<ol>
+<li><strong>C:\Program Files (x86)\Microsoft Web Tools\Packages</strong></li>
+<li><strong>C:\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Stack 5\Packages</strong></li>
+</ol>
+
+<p><img src="Images/nuget-sources.png?raw=true" alt="Nuget Sources">
+</p></li>
+<li><p>Open Visual Studio 2013.</p></li>
+<li><p>Open the <strong>GeekQuiz.sln</strong> solution located inside the <strong>source\end</strong> folder.</p></li>
+<li><p>Close all open files in Visual Studio.</p></li>
+</ol>
+
+<p><a name="Demo" /></p>
+
+<h2>Demo</h2>
+
+<p>This demo is composed of the following segments:</p>
+
+<ol>
+<li><a href="#segment1">Code walkthrough</a></li>
+<li><a href="#segment2">Real time charts</a></li>
+</ol>
+
+<p><a name="segment1" /></p>
+
+<h3>Code walkthrough</h3>
+
+<ol>
+<li><p>In the <strong>Solution Explorer</strong>, expand the <strong>Hubs</strong> folder and double-click <strong>StatisticsHub.cs</strong>.</p></li>
+<li><p>In the <strong>Solution Explorer</strong>, expand the <strong>Services</strong> folder and double-click <strong>StatisticsService.cs</strong>.</p></li>
+<li><p>Select the <code>var hubContext = GlobalHost.ConnectionManager.GetHubContext&lt;StatisticsHub&gt;();</code> as shown in the following figure.</p>
+
+<p><img src="Images/gethubcontext.png?raw=true" alt="Selecting the call to GetHubContext" title="Selecting the call to GetHubContext">
+</p>
+
+<p><em>Selecting the call to GetHubContext</em></p></li>
+<li><p>Highlight the <code>updateStatistics</code> method call.</p>
+
+<p><img src="Images/updatestatistics.png?raw=true" alt="Highlighting the updateStatistics method call" title="Highlighting the updateStatistics method call">
+</p>
+
+<p><em>Highlighting the updateStatistics method call</em></p>
+<blockquote>
+<p><strong>Speaking point:</strong> Explain that this takes advantage of C# <code>dynamic</code> type and results in events with the name of the method, to which clients can listen.</p>
+</blockquote></li>
+<li><p>Click <code>NotifyUpdates</code> and press <strong>SHIFT + F12</strong> to find all references to the method.</p></li>
+<li><p>Double-click the <code>await this.statisticsService.NotifyUpdates();</code> reference in the <strong>Find Symbol Results</strong> window.</p>
+
+<p><img src="Images/notifyupdatesreference.png?raw=true" alt="Navigating to the NotifyUpdates caller" title="Navigating to the NotifyUpdates caller">
+</p>
+
+<p><em>Navigating to the NotifyUpdates caller</em></p>
+<blockquote>
+<p><strong>Speaking point:</strong> We are updating the stats for all clients every time a question is answered. If we were handling a large number of answers and clients simultaneously we could batch updates.</p>
+</blockquote></li>
+<li><p>Press <strong>CTRL + ,</strong>, type <em>Statistics.cshtml</em> and press <strong>Enter</strong>.</p></li>
+<li><p>Scroll to the bottom of the file.</p></li>
+<li><p>Highlight the <code>var hub = connection.createHubProxy(&quot;StatisticsHub&quot;);</code> line as shown in the following figure.</p>
+
+<p><img src="Images/createhubproxy.png?raw=true" alt="Highlighting the call to createHubProxy" title="Highlighting the call to createHubProxy">
+</p>
+
+<p><em>Highlighting the call to createHubProxy</em></p></li>
+<li><p>Highlight the code that adds the listener for the <code>&quot;updateStatistics&quot;</code> event.</p>
+
+<p><img src="Images/updatestatisticslistener.png?raw=true" alt="Highlighting the updateStatistics listener code" title="Highlighting the updateStatistics listener code">
+</p>
+
+<p><em>Highlighting the updateStatistics listener code</em></p>
+<blockquote>
+<p><strong>Speaking point:</strong> Note that the event we are listening to has the same name as the method we invoke when updating the statistics.</p>
+</blockquote></li>
+<li><p>Highlight the <code>connection.start();</code> line.</p></li>
+</ol>
+
+<p><a name="segment2" /></p>
+
+<h3>Real time charts</h3>
+
+<ol>
+<li><p>Press <strong>F5</strong> to start running the web site.</p></li>
+<li><p>If prompted to log-in, do so.</p></li>
+<li><p>Once the site has started, open a new browser window, and navigate to <strong>/Home/Statistics</strong>.</p>
+
+<p><img src="Images/statistics.png?raw=true" alt="Navigating to the statistics view" title="Navigating to the statistics view">
+</p>
+
+<p><em>Navigating to the statistics view</em></p></li>
+<li><p>Place both windows side by side.</p></li>
+<li><p>Answer questions in one window. The charts and numbers in the other one will update automatically.</p>
+
+<p><img src="Images/automatic-update.png?raw=true" alt="Showing how charts and numbers are automatically updated" title="Showing how charts and numbers are automatically updated">
+</p>
+
+<p><em>Showing how charts and numbers are automatically updated</em></p></li>
+</ol>
+
+<hr>
+
+<p><a name="Summary" /></p>
+
+<h2>Summary</h2>
+
+<p>By completing this demo you should have understood how you can leverage SignalR to push realitme statistics to a page in a web site.</p>
+
+<hr>

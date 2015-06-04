@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Demo xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/ContentFramework.Core.Models">
+	<Id>DemoHandlingChangeEFMigrations</Id>
+  <Technologies>
+		<Technology>Entity Framework</Technology>
+	</Technologies>
+	<Author>
+    <Name>Jon Galloway</Name>
+    <Blog>http://weblogs.asp.net/jgalloway</Blog>
+    <Email>jon.galloway@microsoft.com</Email>
+  </Author>
+	<Description>This demo show how to use Entity Framework migrations to keep changes to you data model and your database in sync.</Description>
+	<Document ConversionType="Html">Demo.md</Document>
+	<Title>DEMO - Handling Change with EF Migrations</Title>
+	<Version>1.0.1</Version>
+	<Source>.\Source</Source>
+</Demo>

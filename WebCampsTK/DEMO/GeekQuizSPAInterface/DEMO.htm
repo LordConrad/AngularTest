@@ -1,0 +1,245 @@
+<p><a name="title" /></p>
+
+<h1>Building a SPA interface using Ember.js</h1>
+
+<hr>
+
+<p><a name="Overview" /></p>
+
+<h2>Overview</h2>
+
+<p>In this demo you will go through the steps required to build the web front end portion of GeekQuiz, focusing on the single page application interaction using Ember.js and Handlebars, and the CSS3 flip animation. </p>
+
+<p><a id="goals" /></p>
+
+<h3>Goals</h3>
+
+<p>In this demo, you will see how to:</p>
+
+<ol>
+<li>Create a single page application using Ember and ASP.NET Web API</li>
+<li>Use CSS3 to perform rich animations</li>
+<li>Use Handlebars to generate HTML based on predefined templates, and integrate that with your Ember controllers</li>
+</ol>
+
+<p><a name="technologies" /></p>
+
+<h3>Key Technologies</h3>
+
+<ul>
+<li><a href="http://emberjs.com/">Ember</a></li>
+<li><a href="http://handlebarsjs.com/">Handlebars</a></li>
+<li><a href="http://www.w3schools.com/css3/">CSS3</a></li>
+</ul>
+
+<p><a name="setup" /></p>
+
+<h3>Setup and Configuration</h3>
+
+<p>Follow these steps to setup your environment for the demo.</p>
+
+<ol>
+<li><p>Follow the steps detailed in <a href="http://docs.nuget.org/docs/creating-packages/hosting-your-own-nuget-feeds">this link</a> to setup local sources for the following directories:</p>
+
+<ol>
+<li><strong>C:\Program Files (x86)\Microsoft Web Tools\Packages</strong></li>
+<li><strong>C:\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Stack 5\Packages</strong></li>
+</ol>
+
+<p><img src="images/nuget-sources.png?raw=true" alt="NuGet Sources">
+</p></li>
+<li><p>Open Visual Studio 2013.</p></li>
+<li><p>Open the <strong>GeekQuiz.sln</strong> solution located under <strong>source\begin</strong>.</p></li>
+<li><p>If you don't have one, create a user account for the application. To do that, press <strong>F5</strong>, click <strong>Register</strong> and provide the information required. After that, close the browser window.</p>
+<blockquote>
+<p><strong>Note:</strong> Remember the information you provided as you will be using it during the demo.</p>
+</blockquote></li>
+<li><p>In Visual Studio, close all open files.</p></li>
+<li><p>Make sure that you have an Internet connection, as this demo requires it to the download NuGet packages.</p></li>
+</ol>
+
+<p><a name="Demo" /></p>
+
+<h2>Demo</h2>
+
+<p>This demo is composed of the following segments:</p>
+
+<ol>
+<li><a href="#segment1">Consuming data from a Web API in an Ember.js app</a></li>
+<li><a href="#segment2">Creating a flip animation using CSS3</a></li>
+</ol>
+
+<p><a name="segment1" /></p>
+
+<h3>Consuming data from a Web API in an Ember.js app</h3>
+
+<ol>
+<li><p>Right-click the <strong>GeekQuiz</strong> project and select <strong>Manage NuGet Packages...</strong>.</p>
+
+<p><img src="images/managenugetpackages.png?raw=true" alt="Manage NuGet Packages">
+</p></li>
+<li><p>Select <strong>Online</strong> on the left panel.</p></li>
+<li><p>Search for &quot;ember&quot; (without the quotes). A list of results similar to the one shown below will be displayed.</p>
+
+<p><img src="images/searchember.png?raw=true" alt="Search Ember">
+</p></li>
+<li><p>Install the package with Id <strong>Ember</strong>.</p>
+
+<p><img src="images/installember.png?raw=true" alt="Install Ember">
+</p></li>
+<li><p>Click <strong>Close</strong> to close the dialog.</p></li>
+<li><p>Press <strong>CTRL + ,</strong> and search for &quot;index.cs&quot; (without the quotes).</p>
+
+<p><img src="images/indexcshtml.png?raw=true" alt="index.cshtml">
+</p></li>
+<li><p>Press <strong>Enter</strong>. The Index.cshtml file is opened in the editor.</p></li>
+<li><p>Add the following code at the bottom of the file. This code will be used as the root of the SPA application.</p>
+
+<!-- mark:1 -->
+
+<pre><code class="HTML">&lt;div id=&quot;bodyContainer&quot;&gt;&lt;/div&gt;
+</code></pre></li>
+<li><p>Add the following code snippet at the bottom of the file:</p>
+
+<!-- mark:1-41 -->
+
+<pre><code class="JavaScript">@section Scripts {
+&lt;script src=&quot;@Url.Content(&quot;~/Scripts/handlebars.js&quot;)&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;@Url.Content(&quot;~/Scripts/ember-1.0.0.js&quot;)&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+    var App = Ember.Application.create({ rootElement: '#bodyContainer' });
+
+    App.Question = Ember.Object.extend({ title: &quot;loading question...&quot;, options: [], answered: false });
+
+    App.IndexController = Ember.ObjectController.extend({
+        question: null,
+        answer: null,
+
+        init: function () {
+            this._super();
+            this.nextQuestion();
+        },
+
+        nextQuestion: function () {
+            var controller = this;
+            var question = App.Question.create();
+            this.set('question', question);
+
+            jQuery.getJSON(&quot;/api/trivia&quot;, function (response) {
+                question.setProperties(response);
+            }).fail(function () { question.set('title', &quot;Oops... something went wrong&quot;) });
+        },
+
+        sendAnswer: function (question, option) {
+            var controller = this;
+
+            // prevent multiple posts for the same question
+            jQuery('.front button').attr('disabled', 'disabled');
+
+            jQuery.post('/api/trivia', { 'questionId': question.id, 'optionId': option.id }, function (response) {
+                controller.set('answer', response ? 'correct' : 'incorrect');
+                controller.set('question.answered', true);
+            });
+        }
+    });
+&lt;/script&gt;
+}
+</code></pre></li>
+<li><p>Add the following code snippet between the <code>&lt;div id=bodyContainer&quot;&gt;&lt;/div&gt;</code> element and the <code>Scripts</code> section:</p>
+
+<!-- mark:1-20 -->
+
+<pre><code class="HTML">&lt;script type=&quot;text/x-handlebars&quot; id=&quot;index&quot;&gt;
+     &lt;section id=&quot;content&quot;&gt;
+          &lt;div class=&quot;container&quot;&gt;
+                &lt;div class=&quot;row&quot;&gt;
+                     &lt;div class=&quot;flip-container text-center col-md-12&quot;&gt;
+                          &lt;div {{bindAttr class=&quot;:front question.answered:flip&quot; }}&gt;
+                                &lt;p class=&quot;lead&quot;&gt;
+                                     {{question.title}}
+                                &lt;/p&gt;
+                                &lt;div class=&quot;row text-center&quot;&gt;
+                                     {{#each option in question.options}}
+                                          &lt;button class=&quot;btn btn-info btn-lg option&quot;&gt;{{option.title}}&lt;/button&gt;
+                                     {{/each}}
+                                &lt;/div&gt;
+                          &lt;/div&gt;
+                     &lt;/div&gt;
+                &lt;/div&gt;
+          &lt;/div&gt;
+     &lt;/section&gt;
+&lt;/script&gt;
+</code></pre>
+<blockquote>
+<p><strong>Important:</strong> Visual Studio's autocorrect feature sometimes changes bindAttr to bind<strong>a</strong>ttr. If that happens, you will need to correct that manually.</p>
+</blockquote></li>
+<li><p>Press <strong>F5</strong>.</p>
+<blockquote>
+<p><strong>Note:</strong> If the Log in page is displayed, provide the credentials you created during the setup steps.</p>
+
+<p><img src="images/login.png?raw=true" alt="Log in">
+</p>
+</blockquote></li>
+<li><p>As shown in the following figure, the buttons will be displayed. Click any of the buttons. Nothing will happen.</p>
+
+<p><img src="images/question.png?raw=true" alt="question">
+</p></li>
+</ol>
+
+<p><a name="segment2" /></p>
+
+<h3>Creating a flip animation using CSS3</h3>
+
+<ol>
+<li><p>Dock the Visual Studio window to the left, and the browser window to the right.</p>
+
+<p><img src="images/dock.png?raw=true" alt="dock">
+</p></li>
+<li><p>In Visual Studio, add the <code>{{action &quot;sendAnswer&quot; question option}}</code> to the <code>&lt;button&gt;</code> element inside the for each. The resulting <code>&lt;button&gt;</code> element is the one from the following code snippet:</p>
+
+<!-- mark:1 -->
+
+<pre><code class="HTML">&lt;button class=&quot;btn btn-info btn-lg option&quot; {{action &quot;sendAnswer&quot; question option}}&gt;{{option.title}}&lt;/button&gt;
+</code></pre></li>
+<li><p>Add the following code snippet as the first child of <code>&lt;div class=&quot;flip-container text-center col-md-12&quot;&gt;</code>:</p>
+
+<!-- mark:1-8 -->
+
+<pre><code class="HTML">&lt;div {{bindAttr class=&quot;:back question.answered:flip answer&quot; }}&gt;
+     &lt;p class=&quot;lead&quot;&gt;
+          {{answer}}
+     &lt;/p&gt;
+     &lt;p&gt;
+          &lt;button class=&quot;btn btn-info btn-lg next option&quot; {{action &quot;nextQuestion&quot; option}}&gt;Next Question&lt;/button&gt;
+     &lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+<blockquote>
+<p><strong>Important:</strong> Visual Studio's autocorrect feature sometimes changes bindAttr to bind<strong>a</strong>ttr. If that happens, you will need to correct that manually.</p>
+</blockquote></li>
+<li><p>Click <strong>Refresh Browser Link</strong>.</p>
+
+<p><img src="images/refreshbrowser.png?raw=true" alt="Refresh Browser">
+</p></li>
+<li><p>In the web browser, click any of the buttons. The flip animation will take place and the result (correct/incorrect) will be displayed.</p>
+
+<p><img src="images/result.png?raw=true" alt="Result">
+</p></li>
+</ol>
+
+<hr>
+
+<p><a name="summary" /></p>
+
+<h2>Summary</h2>
+
+<p>By completing this demo you should have:</p>
+
+<ol>
+<li>Included Ember.js and Handlebars.js via NuGet</li>
+<li>Added handlebars bindings to show question and run the application</li>
+<li>Added Ember code to call sendAnswer</li>
+<li>Set up the CSS3 flip animation</li>
+</ol>
+
+<hr>

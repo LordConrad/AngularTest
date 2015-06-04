@@ -1,0 +1,249 @@
+<p><a name="title" /></p>
+
+<h1>WAAD Authentication</h1>
+
+<hr>
+
+<p><a name="Overview" /></p>
+
+<h2>Overview</h2>
+
+<ol>
+<li>File / New / Configure WAAD in a new project.</li>
+<li>Show the GeekQuiz solution with WAAD Authentication.</li>
+<li>Deploy and show portal configuration.</li>
+</ol>
+
+<p><a id="goals" /></p>
+
+<h3>Goals</h3>
+
+<p>In this demo, you will see how to:</p>
+
+<ol>
+<li>Create an application in Visual Studio that is automatically integrated with a Windows Azure Active Directory tenant.</li>
+<li>Deploy an existing application using Visual Studio to an Azure web site and have it automaitically integrate with a WAAD tenant.</li>
+</ol>
+
+<p><a name="technologies" /></p>
+
+<h3>Key Technologies</h3>
+
+<ul>
+<li><a href="http://www.windowsazure.com/en-us/services/active-directory/">Windows Azure Active Directory</a></li>
+<li><a href="http://www.microsoft.com/visualstudio/esn/products/2013-editions">Visual Studio 2013</a></li>
+</ul>
+
+<p><a name="Setup" /></p>
+
+<h3>Setup and Configuration</h3>
+
+<p>Follow these steps to setup your environment for the demo.</p>
+
+<ol>
+<li><p>Follow the steps detailed in <a href="http://docs.nuget.org/docs/creating-packages/hosting-your-own-nuget-feeds">this link</a> to setup local sources for the following directories:</p>
+
+<ol>
+<li><strong>C:\Program Files (x86)\Microsoft Web Tools\Packages</strong></li>
+<li><strong>C:\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Stack 5\Packages</strong></li>
+</ol>
+
+<p><img src="images/nuget-sources.png?raw=true" alt="NuGet Sources">
+</p></li>
+<li><p>Create a new <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dn151790.aspx">Windows Azure Active Directory tenant</a>.</p></li>
+<li><p>Create a new website in Windows Azure.</p></li>
+<li><p>Add a database as a linked <strong>Linked Resource</strong>.</p></li>
+<li><p>Download the publishing profile. This is be required for segment #2.</p>
+<blockquote>
+<p><strong>Important:</strong> At the time of writing, you can only create one AD per subscription and it cannot be deleted.</p>
+</blockquote></li>
+<li><p>Open Visual Studio 2013.</p></li>
+</ol>
+
+<p><a name="Demo" /></p>
+
+<h2>Demo</h2>
+
+<p>This demo is composed of the following segments:</p>
+
+<ol>
+<li><a href="#segment1">Adding a new website to an organization</a>.</li>
+<li><a href="#segment2">Running the organization's GeekQuiz</a>.</li>
+</ol>
+
+<p><a name="segment1" /></p>
+
+<h3>Adding a new website to an organization</h3>
+
+<ol>
+<li><p>Open the <strong>File / New Project</strong> dialog and select the <strong>Visual C# / Web</strong> templates.</p></li>
+<li><p>Name the application <em>GeekQuiz</em> and click <strong>OK</strong>.</p>
+
+<p><img src="images/creating-a-new-project.png?raw=true" alt="Creating a new project" title="Creating a new project">
+</p>
+
+<p><em>Creating a new project</em></p></li>
+<li><p>Select the <strong>MVC</strong> template and enable <strong>Web API</strong>.</p></li>
+<li><p>Click <strong>Change Authentication</strong>.</p>
+
+<p><img src="images/updating-the-authentication-method.png?raw=true" alt="Updating the authentication method" title="Updating the authentication method">
+</p>
+
+<p><em>Updating the authentication method</em></p>
+<blockquote>
+<p><strong>Speaking Point:</strong> VS tooling allows you to enable WAAD authentication easily. All you need is to provide your tenant domain name and administrator credentials, the two-way trust between your WAAD tenant and your web application is automatically configured.</p>
+</blockquote></li>
+<li><p>In the <strong>Change Authentication</strong> dialog, select <strong>Organizational Accounts</strong>.</p>
+
+<p><img src="images/selecting-organizational-accounts.png?raw=true" alt="Selecting the Organizational Accounts option" title="Selecting the Organizational Accounts option">
+</p>
+
+<p><em>Selecting Organizational Accounts</em></p></li>
+<li><p>Expand the first combo box to show the different options.</p>
+
+<p><img src="images/showing-the-organization-types.png?raw=true" alt="Showing the organization account types" title="Showing the organization account types">
+</p>
+
+<p><em>Showing the organization account types</em></p></li>
+<li><p>Expand the <strong>Access Level</strong> combo box to show the different options.</p>
+
+<p><img src="images/showing-the-access-level-options.png?raw=true" alt="Showing the access level posibilities" title="Showing the access level posibilities">
+</p>
+
+<p><em>Showing the access level posibilities</em></p></li>
+<li><p>Enter your domain (e.g.: &quot;mydomainname.onmicrosoft.com&quot;) as <strong>Domain</strong>.</p>
+
+<p><img src="images/updating-the-domain.png?raw=true" alt="Setting the domain name" title="TODO">
+</p>
+
+<p><em>Setting the domain name</em></p></li>
+<li><p>Click the button with the chevron to see more options.</p>
+
+<p><img src="images/showing-more-options.png?raw=true" alt="Showing more options" title="Showing more options">
+</p>
+
+<p><em>Showing more options</em></p></li>
+<li><p>Click <strong>OK</strong> to continue.</p>
+
+<p><img src="images/completing-the-authentication-update.png?raw=true" alt="Completing the authentication update" title="Completing the authentication update">
+</p>
+
+<p><em>Completing the authentication update</em></p></li>
+<li><p>Sign in using an admin account for your organization (e.g.: &quot;<a href="mailto:admin@mydomainname.onmicrosoft.com">admin@mydomainname.onmicrosoft.com</a>&quot;)</p>
+
+<p><img src="images/signing-in-with-an-organization-admin-account.png?raw=true" alt="Signing in with an organization admin account" title="Signing in with an organization admin account">
+</p>
+
+<p><em>Signing in with an organization admin account</em></p></li>
+<li><p>Back in the <strong>New ASP.Net Project</strong> dialog, click <strong>OK</strong>.</p>
+
+<p><img src="images/creating-the-project.png?raw=true" alt="Completing the project creation" title="Completing the project creation">
+</p>
+
+<p><em>Completing the project creation</em></p>
+<blockquote>
+<p><strong>Speaking Point:</strong> VS tooling configures two-way trust relationship between your app and your WAAD tenant. Your app is registered as a Relying Party in the tenant; and the tenant is configured as an Identity Provider for the app.</p>
+</blockquote></li>
+<li><p>Press <strong>CTRL+F5</strong> to run the web site.</p></li>
+<li><p>If a certificate error is displayed, click <strong>Continue to this website</strong>.</p></li>
+<li><p>Sign in using a user account for your organization (ex. &quot;<a href="mailto:user@mydomainname.onmicrosoft.com">user@mydomainname.onmicrosoft.com</a>&quot;).</p>
+
+<p><img src="images/logging-in-with-an-organization-user.png?raw=true" alt="Signing in using one of the organization's user account" title="Signing in using one of the organization's user account">
+</p>
+
+<p><em>Signing in using one of the organization's user account</em></p></li>
+<li><p>Show that you are logged as the organization's user. </p>
+
+<p><img src="images/showing-the-organization-user-logged.png?raw=true" alt="Showing that you are logged as the organization's user" title="Showing that you are logged as the organization's user">
+</p>
+
+<p><em>Showing that you are logged as the organization's user</em></p></li>
+<li><p>Close the browser.</p></li>
+</ol>
+
+<p><a name="segment2" /></p>
+
+<h3>Running the organization's GeekQuiz</h3>
+
+<ol>
+<li><p>Open the <strong>GeekQuiz.sln</strong> solution located under <strong>source\end-segment2</strong>.</p></li>
+<li><p>Right-click the <strong>GeekQuiz</strong> project and select <strong>Publish…</strong></p>
+
+<p><img src="images/publishing-the-site.png?raw=true" alt="Publishing the Website" title="Publishing the Website">
+</p>
+
+<p><em>Publishing the Website</em></p></li>
+<li><p>In the Publish dialog box, click <strong>Import…</strong>.</p>
+
+<p><img src="images/selecting-the-profile.png?raw=true" alt="Importing the publish profile" title="Importing the publish profile">
+</p>
+
+<p><em>Importing the publish profile</em></p></li>
+<li><p>In the <strong>Import Publish Profile</strong> dialog select <strong>Import from a publish profile file</strong> and click <strong>Browse...</strong> to select the previously downloaded publish profile file.</p>
+
+<p><img src="images/selecting-import-publish-profile.png?raw=true" alt="Selecting the publish profile file" title="Selecting the publish profile file">
+</p>
+
+<p><em>Selecting the publish profile file</em></p></li>
+<li><p>Back in the <strong>Import Publish Profile</strong> dialog click <strong>OK</strong>.</p></li>
+<li><p>Back in the <strong>Publish Web</strong> dialog, click <strong>Next</strong>.</p>
+
+<p><img src="images/reviewing-the-connection-settings-to-deploy.png?raw=true" alt="Reviewing the connection settings to deploy" title="Reviewing the connection settings to deploy">
+</p>
+
+<p><em>Reviewing the connection settings to deploy</em></p></li>
+<li><p>In the settings tab, show the Organizational Authentication configuration.</p>
+
+<p><img src="images/showing-the-organizational-auth-config.png?raw=true" alt="Showing the organizational authentication configuration" title="Showing the organizational authentication configuration">
+</p>
+
+<p><em>Showing the organizational authentication configuration</em></p></li>
+<li><p>Select the connection string for the <strong>TriviaContext</strong> and click <strong>Publish</strong> to publish the site.</p></li>
+<li><p>Once the browser is opened, sign in using an admin account for your organization (e.g.: &quot;<a href="mailto:admin@mydomainname.onmicrosoft.com">admin@mydomainname.onmicrosoft.com</a>&quot;)</p>
+
+<p><img src="images/signing-in-with-an-organization-admin-account.png?raw=true" alt="Signing in with an organization admin account" title="Signing in with an organization admin account">
+</p>
+
+<p><em>Signing in with an organization admin account</em></p></li>
+<li><p>When the deployment is completed, sign in using a user account for your organization (e.g.: &quot;<a href="mailto:user@mydomainname.onmicrosoft.com">user@mydomainname.onmicrosoft.com</a>&quot;).</p>
+
+<p><img src="images/logging-in-with-an-organization-user.png?raw=true" alt="Signing in using one of the organization's user account" title="Signing in using one of the organization's user account">
+</p>
+
+<p><em>Signing in using one of the organization's user account</em></p></li>
+<li><p>Show that you are logged as the organization's user. </p>
+
+<p><img src="images/showing-the-geekquiz-with-waad.png?raw=true" alt="Showing that you are logged as the organization's user" title="Showing that you are logged as the organization's user">
+</p>
+
+<p><em>Showing that you are logged as the organization's user</em></p></li>
+<li><p>Switch to the <em>Windows Azure Management Portal</em>.</p></li>
+<li><p>Navigate to the <strong>Active Directory</strong> section and select the one used for this demo.</p>
+
+<p><img src="images/selecting-your-active-directory.png?raw=true" alt="Selecting your active directory" title="Selecting your active directory">
+</p>
+
+<p><em>Selecting your active directory</em></p></li>
+<li><p>Navigate to the <strong>USERS</strong> tab and show the users that you used for the demo.</p>
+
+<p><img src="images/showing-the-organization-users.png?raw=true" alt="Showing the organization's users" title="Showing the organization's users">
+</p>
+
+<p><em>Showing the organization's users</em></p></li>
+<li><p>Navigate to the <strong>APPLICATIONS</strong> tab and show the new two applications, which were automatically created.</p>
+
+<p><img src="images/showing-the-geekquiz-application-in-the-portal.png?raw=true" alt="Showing the organization's applications" title="Showing the organization's applications">
+</p>
+
+<p><em>Showing the organization's applications</em></p></li>
+</ol>
+
+<hr>
+
+<p><a name="summary" /></p>
+
+<h2>Summary</h2>
+
+<p>By completing this demo you learned how to integrate your website with an existing WAAD tenant.</p>
+
+<hr>

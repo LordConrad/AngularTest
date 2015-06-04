@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Demo xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/ContentFramework.Core.Models">
+	<Id>DemoVisualStudioAndWebEssentials</Id>
+  <Technologies>
+		<Technology>Visual Studio</Technology>
+	</Technologies>
+	<Author>
+    <Name>Jon Galloway</Name>
+    <Blog>http://weblogs.asp.net/jgalloway</Blog>
+    <Email>jon.galloway@microsoft.com</Email>
+  </Author>
+	<Description>This demo explains the new web developer features in Visual Studio 2013 and the Web Essentials extension.</Description>
+	<Document ConversionType="Html">Demo.md</Document>
+	<Title>DEMO - Visual Studio and Web Essentials</Title>
+	<Version>1.0.1</Version>
+	<Source>.\Source</Source>
+</Demo>
